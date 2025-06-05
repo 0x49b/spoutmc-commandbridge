@@ -3,7 +3,7 @@
 
 plugins {
     id("java")
-    id("com.gradleup.shadow") version "8.3.3"
+    id("com.gradleup.shadow") version "8.3.6"
     id("maven-publish")
     id("com.modrinth.minotaur") version "2.+"
 }
