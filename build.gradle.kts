@@ -1,4 +1,5 @@
-import com.sun.javafx.scene.CameraHelper.project
+// Removed invalid internal import
+// import com.sun.javafx.scene.CameraHelper.project
 
 plugins {
     id("java")
@@ -13,8 +14,14 @@ val pluginVersions: List<String> by gradle.extra
 val pluginLoaders: List<String> by gradle.extra
 
 group = "dev.consti"
-
 version = pversion
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
 
 repositories {
     mavenCentral()
@@ -27,10 +34,13 @@ dependencies {
     implementation(project(":velocity"))
 }
 
-java { toolchain { languageVersion.set(JavaLanguageVersion.of(21)) } }
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
 
 tasks {
-    // Configure the existing shadowJar task, don't register a new one
     shadowJar {
         dependsOn(":paper:shadowJar")
         manifest { attributes["paperweight-mappings-namespace"] = "spigot" }
@@ -38,45 +48,28 @@ tasks {
         relocate("dev.jorel.commandapi", "dev.consti.commandbridge.commandapi")
         relocate("org.bstats", "dev.consti.commandbridge.bstats")
 
-        // Include the compiled outputs of core, paper, and velocity
-        from(
-                project(":paper")
-                        .takeIf { it.plugins.hasPlugin("java") }
-                        ?.sourceSets
-                        ?.main
-                        ?.get()
-                        ?.output
-                        ?: files()
-        )
-        from(
-                project(":velocity")
-                        .takeIf { it.plugins.hasPlugin("java") }
-                        ?.sourceSets
-                        ?.main
-                        ?.get()
-                        ?.output
-                        ?: files()
-        )
+        from(project(":paper").sourceSets.main.get().output)
+        from(project(":velocity").sourceSets.main.get().output)
 
         configurations = listOf(project.configurations.runtimeClasspath.get())
         mergeServiceFiles()
     }
 
-    val copyToPaperPlugins by
-            registering(Copy::class) {
-                dependsOn(shadowJar)
-                from(shadowJar.get().outputs.files)
-                into("/mnt/Storage/Server-TEST/CommandBridge/Paper/plugins")
-            }
+    val copyToPaperPlugins by registering(Copy::class) {
+        dependsOn(shadowJar)
+        from(shadowJar.get().outputs.files)
+        into("/mnt/Storage/Server-TEST/CommandBridge/Paper/plugins")
+    }
 
-    val copyToVelocityPlugins by
-            registering(Copy::class) {
-                dependsOn(shadowJar)
-                from(shadowJar.get().outputs.files)
-                into("/mnt/Storage/Server-TEST/CommandBridge/Velocity/plugins")
-            }
+    val copyToVelocityPlugins by registering(Copy::class) {
+        dependsOn(shadowJar)
+        from(shadowJar.get().outputs.files)
+        into("/mnt/Storage/Server-TEST/CommandBridge/Velocity/plugins")
+    }
 
-    register("dev") { dependsOn(copyToPaperPlugins, copyToVelocityPlugins) }
+    register("dev") {
+        dependsOn(copyToPaperPlugins, copyToVelocityPlugins)
+    }
 }
 
 afterEvaluate {

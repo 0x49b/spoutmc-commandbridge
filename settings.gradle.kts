@@ -27,4 +27,4 @@ gradle.extra["pluginLoaders"] =
     listOf("folia", "paper", "purpur", "velocity", "bukkit", "spigot", "waterfall")
 
 
-include("foundationlib")
+include(":foundationlib")

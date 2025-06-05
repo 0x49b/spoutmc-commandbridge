@@ -3,6 +3,7 @@ package dev.consti.commandbridge.paper;
 import java.io.InputStream;
 import java.util.Properties;
 
+import dev.consti.foundationlib.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.consti.commandbridge.paper.core.Runtime;
