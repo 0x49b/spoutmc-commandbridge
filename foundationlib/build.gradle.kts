@@ -34,8 +34,8 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-jackson:0.12.6")
 
     // Logging
-    implementation("org.slf4j:slf4j-api:2.0.12")
-    runtimeOnly("org.slf4j:slf4j-simple:2.0.12")
+    implementation("org.slf4j:slf4j-api:2.0.17")
+    runtimeOnly("org.slf4j:slf4j-simple:2.0.17")
 
     // Testing
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
