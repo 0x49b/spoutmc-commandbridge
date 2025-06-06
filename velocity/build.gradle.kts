@@ -33,7 +33,7 @@ dependencies {
     annotationProcessor("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
     compileOnly("net.william278:papiproxybridge:1.7.2")
     implementation("org.bstats:bstats-velocity:3.1.0")
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:2.13.1")
     implementation(project(":foundationlib"))
     implementation("io.netty:netty-codec-http:4.1.100.Final")
     implementation("org.json:json:20240303")
