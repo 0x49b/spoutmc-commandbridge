@@ -49,7 +49,7 @@ dependencies {
     compileOnly("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
     annotationProcessor("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
     implementation("com.sparkjava:spark-core:2.9.4")
-    implementation("com.auth0:java-jwt:4.4.0")
+    implementation("com.auth0:java-jwt:4.5.0")
     implementation("org.mindrot:jbcrypt:0.4")
     implementation("com.google.guava:guava:33.4.8-jre")
     implementation("org.spongepowered:configurate-yaml:4.1.2")
