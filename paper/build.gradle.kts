@@ -45,13 +45,14 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.6")
     annotationProcessor("dev.jorel:commandapi-annotations:9.7.0")
     implementation(project(":foundationlib"))
+    implementation("org.json:json:20240303")
 }
 
 
 tasks.register("modifyPaperPluginYaml") {
     doLast {
-        
-        val yamlFile = file("src/main/resources/paper-plugin.yml") 
+
+        val yamlFile = file("src/main/resources/paper-plugin.yml")
 
         if (yamlFile.exists()) {
             println("Found paper-plugin.yml")
@@ -78,8 +79,8 @@ tasks.register("modifyPaperPluginYaml") {
 
 tasks.register("modifyLegacyPluginYaml") {
     doLast {
-        
-        val yamlFile = file("src/main/resources/plugin.yml") 
+
+        val yamlFile = file("src/main/resources/plugin.yml")
 
         if (yamlFile.exists()) {
             println("Found legacy plugin.yml")

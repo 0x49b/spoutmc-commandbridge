@@ -41,7 +41,11 @@ java {
 }
 
 tasks {
+
+
+
     shadowJar {
+
         dependsOn(":paper:shadowJar")
         manifest { attributes["paperweight-mappings-namespace"] = "spigot" }
 
@@ -57,20 +61,46 @@ tasks {
 
     val copyToPaperPlugins by registering(Copy::class) {
         dependsOn(shadowJar)
-        from(shadowJar.get().outputs.files)
-        into("/mnt/Storage/Server-TEST/CommandBridge/Paper/plugins")
+        from(shadowJar.get().archiveFile)
+        val isWindows = System.getProperty("os.name").startsWith("Windows")
+        val paperPluginDir = if (isWindows)
+            "C:/Users/Florian/workspace/spoutmc/testservers/data/spoutlobby/plugins"
+        else
+            "/mnt/Storage/Server-TEST/CommandBridge/Paper/plugins"
+        into(paperPluginDir)
     }
 
     val copyToVelocityPlugins by registering(Copy::class) {
+        val isWindows = System.getProperty("os.name").startsWith("Windows")
+        val velocityPluginDir = if (isWindows)
+            "C:/Users/Florian/workspace/spoutmc/testservers/data/spoutproxy/plugins"
+        else
+            "/mnt/Storage/Server-TEST/CommandBridge/Velocity/plugins"
         dependsOn(shadowJar)
-        from(shadowJar.get().outputs.files)
-        into("/mnt/Storage/Server-TEST/CommandBridge/Velocity/plugins")
+        from(shadowJar.get().archiveFile)
+        into(velocityPluginDir)
     }
 
     register("dev") {
-        dependsOn(copyToPaperPlugins, copyToVelocityPlugins)
+        dependsOn(copyToPaperPlugins, copyToVelocityPlugins, "restartDocker")
     }
 }
+
+tasks.register("restartDocker") {
+    doLast {
+        exec {
+            commandLine("docker", "restart", "lobby")
+        }
+        exec{
+            commandLine("docker", "restart", "skyblock")
+        }
+        exec{
+
+            commandLine("docker", "restart", "spoutproxy")
+        }
+    }
+}
+
 
 afterEvaluate {
     modrinth {
