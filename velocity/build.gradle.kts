@@ -39,7 +39,7 @@ dependencies {
     implementation(localGroovy())
     compileOnly("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
     annotationProcessor("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
-    compileOnly("net.william278:papiproxybridge:1.7.2")
+    compileOnly("net.william278:papiproxybridge:1.8.1")
     implementation("org.bstats:bstats-velocity:3.1.0")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation(project(":foundationlib"))
