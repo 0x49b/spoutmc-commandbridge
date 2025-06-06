@@ -43,7 +43,6 @@ java {
 tasks {
 
 
-
     shadowJar {
 
         dependsOn(":paper:shadowJar")
@@ -91,10 +90,10 @@ tasks.register("restartDocker") {
         exec {
             commandLine("docker", "restart", "lobby")
         }
-        exec{
+        exec {
             commandLine("docker", "restart", "skyblock")
         }
-        exec{
+        exec {
 
             commandLine("docker", "restart", "spoutproxy")
         }

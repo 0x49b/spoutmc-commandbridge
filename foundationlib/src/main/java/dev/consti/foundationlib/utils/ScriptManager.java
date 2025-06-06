@@ -1,5 +1,9 @@
 package dev.consti.foundationlib.utils;
 
+import dev.consti.foundationlib.logging.Logger;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,11 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-
-import dev.consti.foundationlib.logging.Logger;
 
 /**
  * ScriptManager is a concrete class for managing scripts data stored in YAML files.
@@ -113,7 +112,7 @@ public abstract class ScriptManager {
     /**
      * Copies a default script file from resources if it does not exist.
      *
-     * @param resourceName The name of the resource to copy
+     * @param resourceName   The name of the resource to copy
      * @param targetFileName The target name for the script file
      */
     public void copyDefaultScript(String resourceName, String targetFileName) {
@@ -147,6 +146,14 @@ public abstract class ScriptManager {
         }
     }
 
+    /**
+     * Called after each script file is loaded. This method allows subclasses to perform
+     * specific actions with the loaded script data, such as processing or initializing.
+     *
+     * @param fileName     The name of the script file that was processed
+     * @param scriptConfig The ScriptConfig object containing the configuration data
+     */
+    public abstract void onFileProcessed(String fileName, ScriptConfig scriptConfig);
 
     /**
      * ScriptConfig class represents the configuration of a script.
@@ -176,11 +183,25 @@ public abstract class ScriptManager {
             }
         }
 
-        public String getName() { return name; }
-        public boolean isEnabled() { return enabled; }
-        public boolean shouldIgnorePermissionCheck() { return ignorePermissionCheck; }
-        public boolean shouldHidePermissionWarning() { return hidePermissionWarning; }
-        public List<Command> getCommands() { return commands; }
+        public String getName() {
+            return name;
+        }
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public boolean shouldIgnorePermissionCheck() {
+            return ignorePermissionCheck;
+        }
+
+        public boolean shouldHidePermissionWarning() {
+            return hidePermissionWarning;
+        }
+
+        public List<Command> getCommands() {
+            return commands;
+        }
     }
 
     /**
@@ -197,6 +218,7 @@ public abstract class ScriptManager {
 
         /**
          * Creates a new Command object based on the given data.
+         *
          * @param data A map containing the command configuration values.
          */
         @SuppressWarnings("unchecked")
@@ -214,45 +236,50 @@ public abstract class ScriptManager {
         /**
          * @return The command string to be executed.
          */
-        public String getCommand() { return command; }
+        public String getCommand() {
+            return command;
+        }
 
         /**
          * @return The delay in seconds before the command is executed.
          */
-        public int getDelay() { return delay; }
+        public int getDelay() {
+            return delay;
+        }
 
         /**
          * @return A list of target server IDs where the command should be executed.
          */
-        public List<String> getTargetClientIds() { return targetClientIds; }
+        public List<String> getTargetClientIds() {
+            return targetClientIds;
+        }
 
         /**
          * @return The executor that should run the command.
          */
-        public String getTargetExecutor() { return targetExecutor; }
+        public String getTargetExecutor() {
+            return targetExecutor;
+        }
 
         /**
          * @return Whether the command should wait until the player is online before execution.
          */
-        public boolean shouldWaitUntilPlayerIsOnline() { return waitUntilPlayerIsOnline; }
+        public boolean shouldWaitUntilPlayerIsOnline() {
+            return waitUntilPlayerIsOnline;
+        }
 
         /**
          * @return Whether the server should check if the executor is an instance of Player.
          */
-        public boolean isCheckIfExecutorIsPlayer() { return checkIfExecutorIsPlayer; }
+        public boolean isCheckIfExecutorIsPlayer() {
+            return checkIfExecutorIsPlayer;
+        }
 
         /**
          * @return Whether the server should check if the executor is present on the target server.
          */
-        public boolean isCheckIfExecutorIsOnServer() { return checkIfExecutorIsOnServer; }
+        public boolean isCheckIfExecutorIsOnServer() {
+            return checkIfExecutorIsOnServer;
+        }
     }
-
-    /**
-     * Called after each script file is loaded. This method allows subclasses to perform
-     * specific actions with the loaded script data, such as processing or initializing.
-     *
-     * @param fileName    The name of the script file that was processed
-     * @param scriptConfig The ScriptConfig object containing the configuration data
-     */
-    public abstract void onFileProcessed(String fileName, ScriptConfig scriptConfig);
 }

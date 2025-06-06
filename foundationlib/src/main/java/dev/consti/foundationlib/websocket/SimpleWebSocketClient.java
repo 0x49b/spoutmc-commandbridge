@@ -1,26 +1,11 @@
 package dev.consti.foundationlib.websocket;
 
-import java.net.URI;
-import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import dev.consti.foundationlib.json.MessageBuilder;
 import dev.consti.foundationlib.json.MessageParser;
 import dev.consti.foundationlib.logging.Logger;
 import dev.consti.foundationlib.utils.TLSUtils;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -28,12 +13,15 @@ import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
-import io.netty.handler.codec.http.websocketx.WebSocketVersion;
+import io.netty.handler.codec.http.websocketx.*;
 import io.netty.handler.ssl.SslHandler;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
+import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 /**
  * AbstractSecureWebSocketClient provides a secure WebSocket client setup with
@@ -43,10 +31,10 @@ import io.netty.handler.ssl.SslHandler;
  */
 public abstract class SimpleWebSocketClient {
 
-    private Channel channel;
-    private EventLoopGroup group;
     private final Logger logger;
     private final String secret;
+    private Channel channel;
+    private EventLoopGroup group;
     private URI uri;
     private WebSocketClientHandshaker handshaker;
 
@@ -100,7 +88,7 @@ public abstract class SimpleWebSocketClient {
             logger.info("Attempting to connect to server at: {}:{}", address, port);
             ChannelFuture future = bootstrap.connect(uri.getHost(), port).sync();
             channel = future.channel();
-            
+
         } catch (Exception e) {
             throw new RuntimeException("Connection failed", e);
         }
@@ -161,7 +149,7 @@ public abstract class SimpleWebSocketClient {
                         channel.close();
                     }
                     case "error" ->
-                        logger.warn("Received error from server: {}", parser.getBodyValueAsString("message"));
+                            logger.warn("Received error from server: {}", parser.getBodyValueAsString("message"));
                     case null, default -> logger.error("Received not a valid status");
                 }
 
@@ -208,7 +196,7 @@ public abstract class SimpleWebSocketClient {
             if (!handshaker.isHandshakeComplete()) {
                 handshaker.finishHandshake(ch, (FullHttpResponse) msg);
                 logger.info("Connected to server: {}", uri);
-                
+
                 MessageBuilder builder = new MessageBuilder("auth");
                 builder.addToBody("secret", secret);
                 JSONObject authMessage = builder.build();

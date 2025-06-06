@@ -5,8 +5,8 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.ProxyServer;
 import dev.consti.commandbridge.velocity.Main;
 import dev.consti.commandbridge.velocity.core.Runtime;
-import dev.consti.commandbridge.velocity.helper.InternalRegistrar;
 import dev.consti.commandbridge.velocity.helper.FailureChecker;
+import dev.consti.commandbridge.velocity.helper.InternalRegistrar;
 import dev.consti.commandbridge.velocity.helper.StatusManager;
 import dev.consti.foundationlib.logging.Logger;
 

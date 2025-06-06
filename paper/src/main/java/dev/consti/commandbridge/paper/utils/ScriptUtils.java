@@ -42,10 +42,8 @@ public class ScriptUtils extends ScriptManager {
                             Runtime.getInstance().getRegistrar().unregisterAllCommands();
                             logger.debug("All commands have been unloaded");
                             callback.run();
-                });
+                        });
     }
-
-
 
 
 }

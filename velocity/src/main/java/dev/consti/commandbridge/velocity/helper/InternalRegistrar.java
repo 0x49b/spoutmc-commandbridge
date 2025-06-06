@@ -7,11 +7,7 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.ProxyServer;
 import dev.consti.commandbridge.velocity.Main;
 import dev.consti.commandbridge.velocity.core.Runtime;
-import dev.consti.commandbridge.velocity.helper.command.ListCommand;
-import dev.consti.commandbridge.velocity.helper.command.ReloadCommand;
-import dev.consti.commandbridge.velocity.helper.command.StartCommand;
-import dev.consti.commandbridge.velocity.helper.command.StopCommand;
-import dev.consti.commandbridge.velocity.helper.command.VersionCommand;
+import dev.consti.commandbridge.velocity.helper.command.*;
 import dev.consti.foundationlib.logging.Logger;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -59,7 +55,7 @@ public class InternalRegistrar {
 
             LiteralCommandNode<CommandSource> commandBridgeNode = commandBridgeBuilder.build();
 
-             Runtime.getInstance().getGeneralUtils().setMeta(proxy.getCommandManager()
+            Runtime.getInstance().getGeneralUtils().setMeta(proxy.getCommandManager()
                     .metaBuilder("commandbridge")
                     .aliases("cb")
                     .plugin(plugin)

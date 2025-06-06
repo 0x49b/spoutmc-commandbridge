@@ -1,13 +1,8 @@
 package dev.consti.commandbridge.velocity.command;
 
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
-
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-
 import dev.consti.commandbridge.velocity.Main;
 import dev.consti.commandbridge.velocity.core.Runtime;
 import dev.consti.commandbridge.velocity.util.ProxyUtils;
@@ -17,6 +12,10 @@ import dev.consti.foundationlib.utils.StringParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.william278.papiproxybridge.api.PlaceholderAPI;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class CommandForwarder {
     private final Logger logger;
@@ -163,7 +162,7 @@ public class CommandForwarder {
     }
 
     private void scheduleCommand(ScriptManager.Command cmd, String command, String[] args, Player player,
-            int retryCount) {
+                                 int retryCount) {
         logger.debug("Scheduling command '{}' with delay: {} seconds", cmd.getCommand(), cmd.getDelay());
         proxy.getScheduler().buildTask(plugin, () -> sendCommand(cmd, command, args, player, retryCount))
                 .delay(cmd.getDelay(), TimeUnit.SECONDS)

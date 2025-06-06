@@ -1,10 +1,5 @@
 package dev.consti.commandbridge.velocity;
 
-import java.io.InputStream;
-import java.util.Properties;
-
-import org.bstats.velocity.Metrics;
-
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
@@ -13,7 +8,6 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-
 import dev.consti.commandbridge.velocity.core.Runtime;
 import dev.consti.commandbridge.velocity.util.ProxyUtils;
 import dev.consti.foundationlib.logging.Logger;
@@ -22,6 +16,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bstats.velocity.Metrics;
+
+import java.io.InputStream;
+import java.util.Properties;
 
 @Plugin(id = "commandbridge", name = "CommandBridge", version = "Unknown", authors = "objz")
 public class Main {

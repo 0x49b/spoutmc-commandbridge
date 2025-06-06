@@ -1,14 +1,13 @@
 package dev.consti.commandbridge.paper;
 
-import java.io.InputStream;
-import java.util.Properties;
-
-import dev.consti.foundationlib.logging.Logger;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import dev.consti.commandbridge.paper.core.Runtime;
+import dev.consti.foundationlib.logging.Logger;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.InputStream;
+import java.util.Properties;
 
 public class Main extends JavaPlugin {
     private static Main instance;
@@ -18,7 +17,7 @@ public class Main extends JavaPlugin {
         instance = this;
         logger = Runtime.getInstance().getLogger();
     }
-    
+
     public static String getVersion() {
         try (InputStream input = Main.class.getClassLoader().getResourceAsStream("plugin.properties")) {
             if (input == null) {
@@ -42,6 +41,7 @@ public class Main extends JavaPlugin {
     public void onLoad() {
         CommandAPI.onLoad(new CommandAPIBukkitConfig(this).verboseOutput(false).silentLogs(true).skipReloadDatapacks(true).shouldHookPaperReload(false));
     }
+
     @Override
     public void onEnable() {
         CommandAPI.onEnable();

@@ -1,17 +1,16 @@
 package dev.consti.commandbridge.paper.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.ChatColor;
-
 import dev.consti.commandbridge.paper.Main;
+import dev.consti.commandbridge.paper.core.Runtime;
 import dev.consti.foundationlib.logging.Logger;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
-import dev.consti.commandbridge.paper.core.Runtime;
+import org.bukkit.ChatColor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GeneralUtils {
     private final Logger logger;

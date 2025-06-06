@@ -1,19 +1,18 @@
 package dev.consti.commandbridge.paper.websocket;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.Timer;
-import java.util.TimerTask;
+import dev.consti.commandbridge.paper.core.Runtime;
+import dev.consti.foundationlib.logging.Logger;
+import dev.consti.foundationlib.utils.ConfigManager;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
-import dev.consti.commandbridge.paper.core.Runtime;
-import dev.consti.foundationlib.logging.Logger;
-import dev.consti.foundationlib.utils.ConfigManager;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Ping {
     private static void startPing(Logger logger, Runnable onPong, String url, int port, int maxAttempts) {
@@ -73,26 +72,26 @@ public class Ping {
         }
 
         startPing(logger, () -> {
-            Runtime.getInstance().getClient().disconnect();
+                    Runtime.getInstance().getClient().disconnect();
 
-            String host = config.getKey("config.yml", "remote");
-            int port = Integer.parseInt(config.getKey("config.yml", "port"));
+                    String host = config.getKey("config.yml", "remote");
+                    int port = Integer.parseInt(config.getKey("config.yml", "port"));
 
-            try {
-                Runtime.getInstance().getClient().connect(host, port);
-                logger.info("Client reconnected successfully to {}:{}", host, port);
-            } catch (Exception e) {
-                logger.error("Client reconnection failed (but ping succeeded):", e);
-            }
+                    try {
+                        Runtime.getInstance().getClient().connect(host, port);
+                        logger.info("Client reconnected successfully to {}:{}", host, port);
+                    } catch (Exception e) {
+                        logger.error("Client reconnection failed (but ping succeeded):", e);
+                    }
 
-        }, config.getKey("config.yml", "remote"),
+                }, config.getKey("config.yml", "remote"),
                 Integer.parseInt(config.getKey("config.yml", "port")),
                 attempts);
     }
 
     private static void disableCertificateValidation() {
         try {
-            TrustManager[] trustAllCerts = new TrustManager[] {
+            TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
                         public java.security.cert.X509Certificate[] getAcceptedIssuers() {
                             return new java.security.cert.X509Certificate[0];

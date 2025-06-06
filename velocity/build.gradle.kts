@@ -1,13 +1,13 @@
 //import com.google.gson.JsonParser
-import java.nio.file.Files
-import java.nio.file.Path
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import org.gradle.api.tasks.Copy
 
 
 plugins {
     id("java")
+    id("eclipse")
+    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.10"
+    id("xyz.jpenilla.run-velocity") version "2.3.1"
 }
 
 val pversion: String by gradle.extra
@@ -19,6 +19,14 @@ repositories {
     mavenCentral()
     maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
     maven { url = uri("https://repo.william278.net/releases/") }
+    maven {
+        name = "papermc-repo"
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
+    maven {
+        name = "sonatype"
+        url = uri("https://oss.sonatype.org/content/groups/public/")
+    }
 }
 
 java {
@@ -37,6 +45,14 @@ dependencies {
     implementation(project(":foundationlib"))
     implementation("io.netty:netty-codec-http:4.1.100.Final")
     implementation("org.json:json:20240303")
+
+    compileOnly("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
+    annotationProcessor("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
+    implementation("com.sparkjava:spark-core:2.9.4")
+    implementation("com.auth0:java-jwt:4.4.0")
+    implementation("org.mindrot:jbcrypt:0.4")
+    implementation("com.google.guava:guava:33.4.8-jre")
+    implementation("org.spongepowered:configurate-yaml:4.1.2")
 
 
 }

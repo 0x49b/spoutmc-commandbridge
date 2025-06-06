@@ -13,6 +13,13 @@ public class StringParser {
     private final Map<String, String> placeholders = new HashMap<>();
 
     /**
+     * Returns a static instance of {@code StringParser}, making it a reusable utility.
+     */
+    public static StringParser create() {
+        return new StringParser();
+    }
+
+    /**
      * Adds or updates a placeholder and its corresponding value in the context.
      *
      * @param placeholder the placeholder string (e.g., "%player%").
@@ -86,12 +93,5 @@ public class StringParser {
 
         matcher.appendTail(result);
         return result.toString();
-    }
-
-    /**
-     * Returns a static instance of {@code StringParser}, making it a reusable utility.
-     */
-    public static StringParser create() {
-        return new StringParser();
     }
 }

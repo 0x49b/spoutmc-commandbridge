@@ -1,29 +1,29 @@
 package dev.consti.commandbridge.velocity.websocket;
 
+import dev.consti.commandbridge.velocity.api.service.ApiService;
 import dev.consti.foundationlib.logging.Logger;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.ChannelHandler.Sharable;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.*;
 import io.netty.handler.ssl.NotSslRecordException;
-
-import static io.netty.handler.codec.http.HttpResponseStatus.*;
-import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 import javax.net.ssl.SSLHandshakeException;
 
+import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
+import static io.netty.handler.codec.http.HttpResponseStatus.OK;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+
 
 @Sharable
-public class HttpServer extends SimpleChannelInboundHandler<FullHttpRequest>{
+public class HttpServer extends SimpleChannelInboundHandler<FullHttpRequest> {
     private Logger logger;
+    private final ApiService apiService;
 
-    
-    public HttpServer(Logger logger) {
+
+    public HttpServer(Logger logger, ApiService apiService) {
         this.logger = logger;
+        this.apiService = apiService;
     }
 
 
@@ -34,6 +34,8 @@ public class HttpServer extends SimpleChannelInboundHandler<FullHttpRequest>{
 
         if ("/ping".equalsIgnoreCase(uri)) {
             sendTextResponse(ctx, OK, "pong");
+        } else if (uri.startsWith("/api")) {
+            apiService.handleApiRequest(ctx, msg);
         } else if ("websocket".equalsIgnoreCase(msg.headers().get(HttpHeaderNames.UPGRADE))) {
             ctx.fireChannelRead(msg.retain());
         } else {
@@ -43,9 +45,9 @@ public class HttpServer extends SimpleChannelInboundHandler<FullHttpRequest>{
 
     private void sendTextResponse(ChannelHandlerContext ctx, HttpResponseStatus status, String content) {
         FullHttpResponse response = new DefaultFullHttpResponse(
-            HTTP_1_1,
-            status,
-            ctx.alloc().buffer().writeBytes(content.getBytes())
+                HTTP_1_1,
+                status,
+                ctx.alloc().buffer().writeBytes(content.getBytes())
         );
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
         response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());

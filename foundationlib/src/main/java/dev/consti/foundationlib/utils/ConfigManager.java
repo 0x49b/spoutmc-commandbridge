@@ -1,5 +1,9 @@
 package dev.consti.foundationlib.utils;
 
+import dev.consti.foundationlib.logging.Logger;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,11 +13,6 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-
-import dev.consti.foundationlib.logging.Logger;
-
 /**
  * ConfigManager is a concrete class for managing configuration data stored in
  * YAML files.
@@ -21,11 +20,11 @@ import dev.consti.foundationlib.logging.Logger;
 public class ConfigManager {
 
     private final Map<String, Map<String, Object>> configData = new HashMap<>();
-    private String secret;
     private final Yaml yaml;
     private final Logger logger;
     private final String configDirectory; // Configurable directory for configuration files
     private final String secretFileName; // Configurable secret file name
+    private String secret;
 
     /**
      * Constructor with default secret file name.
@@ -41,7 +40,7 @@ public class ConfigManager {
      * Constructor for ConfigManager, which takes a Logger, the configuration
      * directory,
      * and the secret file name.
-     * 
+     *
      * @param logger         A Logger instance for logging
      * @param pluginName     The name of the plugin (used for directory naming)
      * @param secretFileName The default name of the secret file
@@ -96,7 +95,7 @@ public class ConfigManager {
     /**
      * Loads configuration data from the specified file.
      * If the file does not exist, it is copied from a default resource.
-     * 
+     *
      * @param path The path to the YAML script fil
      */
     private void loadConfigFile(Path path) {
@@ -115,8 +114,6 @@ public class ConfigManager {
     /**
      * Loads the secret from the specified file.
      * If the file does not exist, it is generated.
-     * 
-     * 
      */
     public void loadSecret() {
         File secretFile = new File(configDirectory, secretFileName);
@@ -135,7 +132,7 @@ public class ConfigManager {
 
     /**
      * Retrieves a configuration value based on the specified key.
-     * 
+     *
      * @param key      The key for the configuration value
      * @param fileName The name of the configuration file
      * @return The value as a String, or null if the key does not exist
@@ -152,7 +149,7 @@ public class ConfigManager {
 
     /**
      * Retrieves the stored secret.
-     * 
+     *
      * @return The secret as a String, or null if no secret was loaded
      */
     public String getSecret() {
@@ -167,8 +164,6 @@ public class ConfigManager {
 
     /**
      * Generates a new secret file if it does not exist.
-     * 
-     * 
      */
     protected void generateSecret() {
         File configDir = new File(configDirectory);
@@ -195,7 +190,7 @@ public class ConfigManager {
 
     /**
      * Copies a default configuration file from resources to the target directory.
-     * 
+     *
      * @param resourceName   The name of the default resource
      * @param targetFileName The target name for the configuration file
      */
@@ -214,7 +209,7 @@ public class ConfigManager {
 
         // Copy config file from resources
         try (InputStream in = getClass().getResourceAsStream("/" + resourceName);
-                OutputStream out = Files.newOutputStream(configFile.toPath())) {
+             OutputStream out = Files.newOutputStream(configFile.toPath())) {
             if (in == null) {
                 throw new RuntimeException("Resource '" + resourceName + "' not found in the plugin JAR");
             }

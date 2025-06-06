@@ -5,4 +5,4 @@ author: objz
 api-version: '1.20'
 folia-supported: true
 softdepend:
-- PlaceholderAPI
+  - PlaceholderAPI

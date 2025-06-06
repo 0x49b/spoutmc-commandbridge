@@ -1,14 +1,14 @@
 package dev.consti.foundationlib.utils;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.regex.Pattern;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * Utility class for checking plugin versions and performing version comparisons.
@@ -18,18 +18,17 @@ import org.json.JSONObject;
 public class VersionChecker {
 
     /**
-     * The project ID on Modrinth. This ID is used in API requests to fetch project version information.
-     */
-    private static String projectId;
-
-    /**
-     * The base URL for the Modrinth API to retrieve project versions. The project ID is added dynamically.
-     */
-    private static String MODRINTH_API_URL; 
-    /**
      * A pattern to match numeric components of a version string.
      */
     private static final Pattern VERSION_PATTERN = Pattern.compile("\\d+");
+    /**
+     * The project ID on Modrinth. This ID is used in API requests to fetch project version information.
+     */
+    private static String projectId;
+    /**
+     * The base URL for the Modrinth API to retrieve project versions. The project ID is added dynamically.
+     */
+    private static String MODRINTH_API_URL;
 
     /**
      * Sets the project ID for the Modrinth API URL.
@@ -70,7 +69,7 @@ public class VersionChecker {
     /**
      * Compares the latest version with the current version to determine if an update is available.
      *
-     * @param latestVersion the latest version as a string
+     * @param latestVersion  the latest version as a string
      * @param currentVersion the current version as a string
      * @return {@code true} if the latest version is newer than the current version, {@code false} otherwise
      */
@@ -118,7 +117,7 @@ public class VersionChecker {
     /**
      * Checks if the provided Bukkit version matches the specified current version.
      *
-     * @param bukkitVersion the version of the Bukkit server as a string
+     * @param bukkitVersion  the version of the Bukkit server as a string
      * @param currentVersion the version to check against as a string
      * @return {@code true} if the versions match, {@code false} otherwise
      */

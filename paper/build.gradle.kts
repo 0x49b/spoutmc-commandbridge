@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-      mavenCentral()
+        mavenCentral()
     }
     dependencies {
         classpath("org.yaml:snakeyaml:2.3")
@@ -8,13 +8,13 @@ buildscript {
     }
 }
 
-import org.yaml.snakeyaml.DumperOptions
-import org.yaml.snakeyaml.Yaml
+import org . yaml . snakeyaml . DumperOptions
+        import org . yaml . snakeyaml . Yaml
 
-plugins {
-    id("java")
-    id("com.gradleup.shadow") version "8.3.6"
-}
+        plugins {
+            id("java")
+            id("com.gradleup.shadow") version "8.3.6"
+        }
 
 val pversion: String by gradle.extra
 
@@ -25,8 +25,8 @@ repositories {
     mavenCentral()
     maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
     maven { url = uri("https://repo.codemc.org/repository/maven-public/") }
-    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")}
-    maven { url = uri("https://repo.extendedclip.com/releases/")}
+    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
+    maven { url = uri("https://repo.extendedclip.com/releases/") }
 }
 
 java {

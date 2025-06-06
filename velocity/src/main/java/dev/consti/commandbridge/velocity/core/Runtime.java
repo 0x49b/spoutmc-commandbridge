@@ -2,10 +2,12 @@ package dev.consti.commandbridge.velocity.core;
 
 
 import dev.consti.commandbridge.velocity.Main;
+import dev.consti.commandbridge.velocity.api.service.ApiService;
 import dev.consti.commandbridge.velocity.command.CommandDispatcher;
 import dev.consti.commandbridge.velocity.command.CommandForwarder;
 import dev.consti.commandbridge.velocity.command.CommandRegistrar;
 import dev.consti.commandbridge.velocity.util.GeneralUtils;
+import dev.consti.commandbridge.velocity.util.ProxyUtils;
 import dev.consti.commandbridge.velocity.util.ScriptUtils;
 import dev.consti.commandbridge.velocity.websocket.HttpServer;
 import dev.consti.commandbridge.velocity.websocket.Server;
@@ -25,7 +27,8 @@ public class Runtime {
     private CommandDispatcher commandDispatcher;
     private HttpServer httpServer;
 
-    private Runtime() {}
+    private Runtime() {
+    }
 
     public static synchronized Runtime getInstance() {
         if (instance == null) {
@@ -108,8 +111,10 @@ public class Runtime {
     }
 
     public synchronized HttpServer getHttpServer() {
+
+
         if (httpServer == null) {
-            httpServer = new HttpServer(logger);
+            httpServer = new HttpServer(logger, new ApiService(config, ProxyUtils.getProxyServer()));
             getLogger().debug("HttpServer initialized.");
         }
         return httpServer;

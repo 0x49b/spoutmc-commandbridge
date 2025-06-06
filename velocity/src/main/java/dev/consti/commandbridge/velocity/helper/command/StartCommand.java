@@ -18,10 +18,10 @@ public class StartCommand {
                         return 0;
                     }
                     Runtime.getInstance().getServer().startServer(
-                    Integer.parseInt(Runtime.getInstance().getConfig().getKey("config.yml", "port")),
-                    Runtime.getInstance().getConfig().getKey("config.yml", "host"),
-                    Runtime.getInstance().getConfig().getKey("config.yml", "san")
-            );
+                            Integer.parseInt(Runtime.getInstance().getConfig().getKey("config.yml", "port")),
+                            Runtime.getInstance().getConfig().getKey("config.yml", "host"),
+                            Runtime.getInstance().getConfig().getKey("config.yml", "san")
+                    );
 
                     source.sendMessage(Component.text("WebSocket Server started").color(NamedTextColor.GREEN));
                     return 1;

@@ -30,6 +30,27 @@ public class Logger {
         this("Logger");
     }
 
+    private static String getString(String message, boolean extended) {
+        String formattedMessage;
+        if (extended) {
+            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+            StackTraceElement caller = stackTrace[4];
+            String className = caller.getClassName();
+            String methodName = caller.getMethodName();
+
+            formattedMessage = String.format(
+                    "(%s#%s): %s",
+                    className,
+                    methodName,
+                    message
+            );
+
+        } else {
+            formattedMessage = message;
+        }
+        return formattedMessage;
+    }
+
     /**
      * Logs an info-level message.
      *
@@ -99,25 +120,13 @@ public class Logger {
         }
     }
 
-    private static String getString(String message, boolean extended) {
-        String formattedMessage;
-        if (extended) {
-            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-            StackTraceElement caller = stackTrace[4];
-            String className = caller.getClassName();
-            String methodName = caller.getMethodName();
-
-            formattedMessage = String.format(
-                "(%s#%s): %s",
-                className,
-                methodName,
-                    message
-            );
-
-        } else {
-            formattedMessage = message;
-        }
-        return formattedMessage;
+    /**
+     * Gets the current debug mode status.
+     *
+     * @return {@code true} if debug mode is enabled; {@code false} otherwise.
+     */
+    public Boolean getDebug() {
+        return debug;
     }
 
     /**
@@ -127,14 +136,5 @@ public class Logger {
      */
     public void setDebug(Boolean debug) {
         this.debug = debug;
-    }
-
-    /**
-     * Gets the current debug mode status.
-     *
-     * @return {@code true} if debug mode is enabled; {@code false} otherwise.
-     */
-    public Boolean getDebug() {
-        return debug;
     }
 }

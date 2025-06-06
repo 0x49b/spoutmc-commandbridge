@@ -1,15 +1,14 @@
 package dev.consti.commandbridge.velocity.command;
 
-import java.util.Optional;
-import java.util.UUID;
-
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-
 import dev.consti.commandbridge.velocity.core.Runtime;
 import dev.consti.commandbridge.velocity.util.ProxyUtils;
 import dev.consti.foundationlib.json.MessageParser;
 import dev.consti.foundationlib.logging.Logger;
+
+import java.util.Optional;
+import java.util.UUID;
 
 public class CommandDispatcher {
     private final ProxyServer proxy;

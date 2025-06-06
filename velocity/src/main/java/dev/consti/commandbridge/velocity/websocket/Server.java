@@ -1,15 +1,16 @@
 package dev.consti.commandbridge.velocity.websocket;
 
-import java.util.*;
-
 import com.velocitypowered.api.proxy.Player;
-
 import dev.consti.commandbridge.velocity.core.Runtime;
 import dev.consti.foundationlib.json.MessageBuilder;
 import dev.consti.foundationlib.json.MessageParser;
 import dev.consti.foundationlib.logging.Logger;
 import dev.consti.foundationlib.websocket.SimpleWebSocketServer;
 import io.netty.channel.Channel;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class Server extends SimpleWebSocketServer {
     private final Logger logger;
@@ -60,7 +61,7 @@ public class Server extends SimpleWebSocketServer {
             } else {
                 logger.warn("Disconnected WebSocket client '{}' not found in client connections map.", clientAddress);
             }
-        } 
+        }
     }
 
     private void handleCommandRequest(Channel webSocket, String message) {

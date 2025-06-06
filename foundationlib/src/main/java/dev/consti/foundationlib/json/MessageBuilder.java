@@ -1,7 +1,8 @@
 package dev.consti.foundationlib.json;
-import java.time.Instant;
 
 import org.json.JSONObject;
+
+import java.time.Instant;
 
 /**
  * MessageBuilder is a utility class for building JSON messages with

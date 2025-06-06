@@ -71,8 +71,8 @@ public class Client extends SimpleWebSocketClient {
         String task = parser.getBodyValueAsString("task");
         switch (task) {
             case "reload" ->
-                Runtime.getInstance().getScriptUtils().unloadCommands(() -> new SchedulerAdapter(Main.getInstance())
-                        .runLater(Runtime.getInstance().getGeneralUtils()::reloadAll, 10L));
+                    Runtime.getInstance().getScriptUtils().unloadCommands(() -> new SchedulerAdapter(Main.getInstance())
+                            .runLater(Runtime.getInstance().getGeneralUtils()::reloadAll, 10L));
             case "reconnect" -> Ping.reconnect(logger);
             default -> logger.warn("Invalid task: {}", task);
         }

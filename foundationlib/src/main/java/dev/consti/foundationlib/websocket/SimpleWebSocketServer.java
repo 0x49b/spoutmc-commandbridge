@@ -1,36 +1,11 @@
 package dev.consti.foundationlib.websocket;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import dev.consti.foundationlib.json.MessageBuilder;
 import dev.consti.foundationlib.json.MessageParser;
 import dev.consti.foundationlib.logging.Logger;
 import dev.consti.foundationlib.utils.TLSUtils;
-
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -41,6 +16,15 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.ssl.SslHandler;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.util.*;
 
 /**
  * WebSocketServerBase is an abstract WebSocket server class that provides the
@@ -52,17 +36,16 @@ import io.netty.handler.ssl.SslHandler;
 public abstract class SimpleWebSocketServer {
 
     private final Logger logger;
-    private Channel serverChannel;
-    private EventLoopGroup bossGroup;
-    private EventLoopGroup workerGroup;
     private final Set<Channel> connections = Collections.synchronizedSet(new HashSet<>());
     private final Set<Channel> pendingAuthConnections = Collections.synchronizedSet(new HashSet<>());
     private final String secret;
     private final int authTimeoutMillis = 5000;
+    private final List<ChannelHandler> extraHandlers = new ArrayList<>();
+    private Channel serverChannel;
+    private EventLoopGroup bossGroup;
+    private EventLoopGroup workerGroup;
     private InetSocketAddress serverAddress;
 
-    private final List<ChannelHandler> extraHandlers = new ArrayList<>();
-    
     /**
      * Constructs a new WebSocketServerBase with the provided logger and secret key
      * for authentication.
@@ -142,17 +125,16 @@ public abstract class SimpleWebSocketServer {
         }
         try {
             this.serverAddress = new InetSocketAddress(address, port);
-            
+
             final SSLContext sslContext = TLSUtils.createServerSSLContext(SAN);
             if (sslContext == null) {
                 throw new RuntimeException("Failed to initialize SSL context");
             }
 
 
-            
             bossGroup = new NioEventLoopGroup(1);
             workerGroup = new NioEventLoopGroup();
-            
+
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
@@ -162,7 +144,7 @@ public abstract class SimpleWebSocketServer {
                             SSLEngine sslEngine = sslContext.createSSLEngine();
                             sslEngine.setUseClientMode(false);
 
-                            
+
                             ChannelPipeline pipeline = ch.pipeline();
                             pipeline.addLast(new SslHandler(sslEngine));
                             pipeline.addLast(new HttpServerCodec());
@@ -176,16 +158,18 @@ public abstract class SimpleWebSocketServer {
                             pipeline.addLast(new WebSocketFrameHandler());
                         }
                     });
-            
+
             ChannelFuture future = bootstrap.bind(serverAddress).sync();
             serverChannel = future.channel();
-            
+
             logger.info("WebSocket server started on: {}:{}", address, port);
-            
+
         } catch (Exception e) {
             throw new RuntimeException("Error starting WebSocket server", e);
         }
-    }    /**
+    }
+
+    /**
      * Stops the WebSocket server with a specified timeout.
      *
      * @param timeout The timeout in milliseconds for stopping the server
@@ -198,19 +182,19 @@ public abstract class SimpleWebSocketServer {
                     conn.writeAndFlush(new CloseWebSocketFrame(1001, "Server shutdown"));
                     conn.close();
                 }
-                
+
                 connections.clear();
                 pendingAuthConnections.clear();
-                
+
                 serverChannel.close().sync();
-                
+
                 if (bossGroup != null) {
                     bossGroup.shutdownGracefully(0, timeout, java.util.concurrent.TimeUnit.MILLISECONDS).sync();
                 }
                 if (workerGroup != null) {
                     workerGroup.shutdownGracefully(0, timeout, java.util.concurrent.TimeUnit.MILLISECONDS).sync();
                 }
-                
+
                 serverChannel = null;
                 bossGroup = null;
                 workerGroup = null;
@@ -227,7 +211,7 @@ public abstract class SimpleWebSocketServer {
      * Sends a message to a specific client.
      *
      * @param message The JSON message to send to the client
-     * @param conn The channel to send the message to
+     * @param conn    The channel to send the message to
      */
     public void sendMessage(JSONObject message, Channel conn) {
         conn.writeAndFlush(new TextWebSocketFrame(message.toString()));
@@ -239,7 +223,7 @@ public abstract class SimpleWebSocketServer {
      * Calls the abstract `onMessage` method to allow custom handling of
      * authenticated messages.
      *
-     * @param ctx    The ChannelHandlerContext of the connection
+     * @param ctx     The ChannelHandlerContext of the connection
      * @param message The received message
      */
     private void handleMessage(ChannelHandlerContext ctx, String message) {
@@ -280,7 +264,7 @@ public abstract class SimpleWebSocketServer {
 
     /**
      * Abstract method that gets called on connection close.
-     * 
+     *
      * @param conn   The channel that got closed
      * @param code   The disconnect code
      * @param reason The reason why the connection was closed
@@ -302,7 +286,7 @@ public abstract class SimpleWebSocketServer {
             }
         }
     }
-    
+
     /**
      * Broadcasts a message to all connected clients from the server
      *
@@ -316,17 +300,17 @@ public abstract class SimpleWebSocketServer {
         }
         logger.debug("Broadcast client message");
     }
-    
+
     /**
      * WebSocket frame handler for processing incoming WebSocket frames.
      */
     private class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
-        
+
         @Override
         public void channelActive(ChannelHandlerContext ctx) {
             Channel conn = ctx.channel();
             pendingAuthConnections.add(conn);
-            
+
             Timer authTimer = new Timer();
             authTimer.schedule(new TimerTask() {
                 @Override
@@ -342,7 +326,7 @@ public abstract class SimpleWebSocketServer {
                 }
             }, authTimeoutMillis);
         }
-        
+
         @Override
         public void channelInactive(ChannelHandlerContext ctx) {
             Channel conn = ctx.channel();
@@ -350,7 +334,7 @@ public abstract class SimpleWebSocketServer {
             pendingAuthConnections.remove(conn);
             onConnectionClose(conn, 1000, "Connection closed");
         }
-        
+
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame frame) throws Exception {
             if (frame instanceof TextWebSocketFrame) {
@@ -362,7 +346,7 @@ public abstract class SimpleWebSocketServer {
                 onConnectionClose(ctx.channel(), closeFrame.statusCode(), closeFrame.reasonText());
             }
         }
-        
+
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
             logger.error("An error occurred: {}", logger.getDebug() ? cause : cause.getMessage());

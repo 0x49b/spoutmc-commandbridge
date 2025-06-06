@@ -25,7 +25,7 @@ commands:
   # Command 1
   - command: 'say Hello, world!'  # The command string to be executed (use single quotes).
     delay: 0                      # Delay (in seconds) before executing the command.
-    target-client-ids:            # List of target server IDs where the command will be executed.
+    target-client-ids: # List of target server IDs where the command will be executed.
       - 'lobby'
       - 'survival'
     target-executor: 'player'     # Who executes the command: 'player' or 'console'.
@@ -36,7 +36,7 @@ commands:
   # Command 2
   - command: 'say I love Coding!' # The command string to be executed (use single quotes).
     delay: 0                      # Delay (in seconds) before executing the command.
-    target-client-ids:            # List of target server IDs where the command will be executed.
+    target-client-ids: # List of target server IDs where the command will be executed.
       - 'lobby'
     target-executor: 'player'     # Who executes the command: 'player' or 'console'.
     wait-until-player-is-online: true  # If true, waits until the player is online to execute.

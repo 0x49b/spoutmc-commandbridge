@@ -1,13 +1,12 @@
 package dev.consti.commandbridge.paper.utils;
 
-import java.lang.reflect.Field;
-
+import dev.consti.commandbridge.paper.core.Runtime;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
 
-import dev.consti.commandbridge.paper.core.Runtime;
+import java.lang.reflect.Field;
 
 public class CommandUtils {
     private static CommandMap getCommandMap() {
