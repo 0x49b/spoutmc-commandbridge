@@ -39,7 +39,7 @@ dependencies {
     // compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
     // compileOnly("org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT")
     compileOnly("dev.folia:folia-api:1.20.1-R0.1-SNAPSHOT")
-    implementation("org.ow2.asm:asm:9.7")
+    implementation("org.ow2.asm:asm:9.8")
     implementation("dev.jorel:commandapi-bukkit-shade:10.0.1")
     compileOnly("dev.jorel:commandapi-annotations:9.7.0")
     compileOnly("me.clip:placeholderapi:2.11.6")
