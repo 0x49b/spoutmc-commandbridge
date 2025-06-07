@@ -52,7 +52,7 @@ dependencies {
     implementation("com.auth0:java-jwt:4.4.0")
     implementation("org.mindrot:jbcrypt:0.4")
     implementation("com.google.guava:guava:33.4.8-jre")
-    implementation("org.spongepowered:configurate-yaml:4.1.2")
+    implementation("org.spongepowered:configurate-yaml:4.2.0")
 
 
 }
