@@ -38,7 +38,7 @@ dependencies {
     runtimeOnly("org.slf4j:slf4j-simple:2.0.12")
 
     // Testing
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation(platform("org.junit:junit-bom:5.13.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-core:5.4.0")
     testImplementation("org.mockito:mockito-junit-jupiter:5.4.0")
